@@ -1,0 +1,15 @@
+# IDEA config files #
+.idea
+.idea/*
+
+# PYTHON running file #
+*.pyc
+*.pyo
+
+# test images #
+*.jpg
+*.png
+*.jpeg
+
+# vscode env #
+.vscode
