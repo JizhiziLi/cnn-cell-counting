@@ -19,12 +19,15 @@
 ## How to Run App
 
 **Step 1:** Run the virtual env `Source activate $name`
+
 **Step 2:** Run `python run.py` to start
 
 
 ## Routes
 
 1.  POST `/print_coordinate`:
+
     Give a specific of the number of image you want to process, get coordinate printed well in save folder.
 2.  POST `/generate_dataset`:
+
     Pass some parameters to generate a balanced labelled dataset used for training and testing.
