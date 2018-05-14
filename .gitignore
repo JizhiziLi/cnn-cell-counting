@@ -7,9 +7,9 @@
 *.pyo
 
 # test images #
-*.jpg
-*.png
-*.jpeg
+# *.jpg
+# *.png
+# *.jpeg
 
 # vscode env #
 .vscode

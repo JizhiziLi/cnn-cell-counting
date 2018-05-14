@@ -1,0 +1,5 @@
+ENTIRE_IMAGE_PATH = './app/static/train/entireImage/'
+BOUNDRY_PATH = './app//static/train/boundry.mat'
+SAVE_PATH = './app/static/save/'
+PARAMS_PATH = './app/static/params/'
+COORDINATE_PATH = './app/static/train/det.mat'
