@@ -8,9 +8,12 @@ import shutil
 
 
 
-class preprocess:
-    def __init__(self,index):
-        self.delete_save_folder()
+class pre_process:
+    '''
+    Class pre_process is used to do preprocessing on image
+    Including load boundary of well, crop into well and print coordinates.
+    '''
+    def __init__(self,index=0):
         self.index = index
         self.filename = f'a{index}.jpeg'
         
@@ -19,13 +22,11 @@ class preprocess:
         os.makedirs(SAVE_PATH)
 
     def load_entire_image(self):
-        print('----loadEntireImage----')
         img = Image.open(os.path.join(ENTIRE_IMAGE_PATH,self.filename),'r').convert('RGB')
         return img
         # img = Image.open(entire_path,'r').convert('RGB')
 
     def load_boundary(self):
-        print('----loadBoundary----')
         boundary = sio.loadmat(BOUNDRY_PATH)['mwBoundary'][0]
         a = boundary[2]
         b = boundary[0]
@@ -33,17 +34,16 @@ class preprocess:
         d = boundary[1]
         return([a,b,c,d])
 
-    def generate_well(self):
-        print('----generate_well----')
+    def generate_well(self,save=False):
         entire_image = self.load_entire_image()
         boundary = self.load_boundary()
         well = entire_image.crop(boundary)
-        well.save(os.path.join(SAVE_PATH,'well.png'))
+        if save:
+            well.save(os.path.join(SAVE_PATH,'well.png'))
         return well
 
 
     def load_coordinate(self):
-        print('----loadCoordinate----')
         det = sio.loadmat(COORDINATE_PATH)
         table = det['detection'][0][self.index-1]
         arrayX = []
@@ -56,8 +56,9 @@ class preprocess:
         return arrayX,arrayY
 
     def print_coordinate(self):
-        print('----printCoordinate----')
-        well = self.generate_well()
+        self.delete_save_folder()
+        #TODO: use True or save=True??
+        well = self.generate_well(True)
         draw = ImageDraw.Draw(well)
         self.load_coordinate()
         X = self.x

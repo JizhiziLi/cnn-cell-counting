@@ -24,3 +24,28 @@ def print_coordinate():
     except Exception as e:
         print(str(e))
         return 'We got Error'
+
+
+#####
+# route /generate_dataset is used to process an image and print its coordinate for a well
+# 
+# eg. curl -H "Content-Type: application/json" -X POST -d 
+# "{
+#  "cell_size": 5,
+#  "crop_length": 50,
+#  "crop_width": 50,
+#  "crops_number_per_image": 60,
+#  "images_range": [1, 3],
+#  "save_name": "train"
+# }"
+# to "127.0.0.1:5000/generate_dataset"
+#####
+@app.route('/generate_dataset', methods=['POST'])
+def generate_dataset():
+    try:
+        body = request.get_json()
+        module._generate_dataset(body)
+        return 'Generate dataset and save to folder params.'
+    except Exception as e:
+        print(str(e))
+        return 'We got Error'

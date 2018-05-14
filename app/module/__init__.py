@@ -1,9 +1,12 @@
 from .model import *
-from .preprocess import *
+from .pre_process import *
+from .generate_dataset import *
 
 
 def _print_coordinate(image_number):
-    print('----ahahah')
-    pre = preprocess(image_number)
-    pre.print_coordinate()
-    # print(imageName)
+    pre = pre_process(image_number)
+    pre.print_coordinate()    
+
+def _generate_dataset(body):
+    gen = generate_dataset(**body)
+    gen.generate_data_balanced()

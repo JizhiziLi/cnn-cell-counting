@@ -1,9 +1,10 @@
 # CNN-CELL-COUNTING
 
-* This is a well-structured microservice to detect number of cells in image based on CNN & other algorithms. 
-* Related dissertation and demo slides can be viewed in `document` folder.
-* Structure used for RESTful methods in this case is flask[http://flask.pocoo.org/].
-* Any questions please contact *JizhiziLi* [jizhizili@gmail.com]
+* This is a well-structured Machine Learning microservice enables RESTful API.
+* Uses to count the number of cells in a medical image based on CNN & other algorithms. 
+* Relevant dissertation and demo slides can be viewed in `document` folder.
+* Structure used for building in this case is flask [http://flask.pocoo.org/].
+* Any questions please contact __Jizhizi Li__ [jizhizili@gmail.com]
 
 ## How to Setup
 
@@ -17,11 +18,13 @@
 
 ## How to Run App
 
-1. Run the virtual env `Source activate $name`
-2. Run `python run.py` to start
+**Step 1:** Run the virtual env `Source activate $name`
+**Step 2:** Run `python run.py` to start
 
 
 ## Routes
 
-*1* POST `/print_coordinate`:
+1.  POST `/print_coordinate`:
     Give a specific of the number of image you want to process, get coordinate printed well in save folder.
+2.  POST `/generate_dataset`:
+    Pass some parameters to generate a balanced labelled dataset used for training and testing.
