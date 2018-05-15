@@ -13,3 +13,6 @@
 
 # vscode env #
 .vscode
+
+# log files #
+*.log

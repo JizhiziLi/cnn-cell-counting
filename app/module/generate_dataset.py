@@ -85,8 +85,8 @@ class generate_dataset:
                 elif(label_true_counter == half_number_crop_per_image and label_false_counter == half_number_crop_per_image):
                     break
 
-        util_instance = util(self.save_name,[data, label_count])
-        util_instance.save_paramsList()
+        util_instance = util()
+        util_instance.save_paramsList(self.save_name,[data, label_count])
         print(f'Generate balanced data set and save to params folder as: {self.save_name}.')
         print(f'{len(label_true_count_list)} in {(self.image_end-self.image_start+1)*self.crops_number_per_image} have labels.')
 
