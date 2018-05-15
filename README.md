@@ -31,3 +31,9 @@
 2.  POST `/generate_dataset`:
 
     Pass some parameters to generate a balanced labelled dataset used for training and testing.
+3.  POST `/linear_model`:
+
+    Pass some parameters to train linear model on training set and test on testing set. Relevant logs and figs will be generated.
+4.  POST `/logistic_model`:
+
+    Pass some parameters to train logistic model on training set and test on testing set. Relevant logs and figs will be generated.
