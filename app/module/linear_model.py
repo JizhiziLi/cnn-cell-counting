@@ -20,8 +20,9 @@ class linear_model_class:
         #run different approach based on 'choice'
         if params['train']['choice']==1:
             self.simpleLinearRegression(**params['train'])
-            if params['test']['choice']==1:
-                self.testLinearRegression(**params['test'])
+            
+        if params['test']['choice']==1:
+            self.testLinearRegression(**params['test'])
 
         logger.info('Finish running in {:.2f} seconds.'.format(time()-start))
 
@@ -34,7 +35,7 @@ class linear_model_class:
         train_label = util_instance.load_paramsList(data_set)[1]
 
         # set up logging thing
-        logging_file = os.path.join(LINEAR_MODEL_PATH,'linear_model.log')
+        logging_file = os.path.join(self.path,'linear_model.log')
         fh = logging.FileHandler(logging_file)
         logger.addHandler(fh)
         logger.setLevel(logging.DEBUG)
