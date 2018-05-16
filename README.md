@@ -32,13 +32,23 @@
 
     ```json
     {
-    "num":3
+        "num":3
     }
     ```
 
     Give a specific number of image you want to process, get the well with coordinate printed in save folder.
 
-2.  POST `/generate_dataset`:
+2.  POST `/plot_data`:
+
+    ```json
+    {
+        "plot_name":"train_plot"
+    }
+    ```
+
+    Give a pkl name, plots data and label on image.
+
+3.  POST `/generate_dataset`:
 
     ```json
     {
@@ -56,7 +66,7 @@
 
     Pass some parameters to generate a balanced labelled dataset used for training and testing.
 
-3.  POST `/linear_model`:
+4.  POST `/linear_model`:
 
     ```json
     {
@@ -73,7 +83,7 @@
 
     Pass some parameters to train linear model on training set and test on testing set. Relevant logs and figs will be generated.
 
-4.  POST `/logistic_model`:
+5.  POST `/logistic_model`:
 
     ```json
     {
@@ -90,7 +100,7 @@
 
     Pass some parameters to train logistic model on training set and test on testing set. Relevant logs and figs will be generated.
 
-5.  POST `/cnn_model/train`:
+6.  POST `/cnn_model/train`:
 
     ```json
     {

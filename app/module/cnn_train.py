@@ -1,5 +1,6 @@
 from .cnn_layers import *
 from .util import *
+from ..config import *
 import os
 import sys
 import numpy
@@ -16,7 +17,10 @@ from scipy.stats.stats import pearsonr
 from math import sqrt
 import math
 from time import time
+import logging
+from datetime import datetime
 
+logger = logging.getLogger(__name__)
 
 class cnn_train():
     def __init__(self, **kwargs):
@@ -29,9 +33,19 @@ class cnn_train():
         self.cell_number = params['cell_number']
         self.learning_rate = params['learning_rate']
         self.train_set_file = params['train_set_file']
-        print('----we have train set file %s ' % self.train_set_file)
+        self.path = CNN_MODEL_PATH
+        logging_file = os.path.join(self.path, 'cnn_model_train.log')
+        fh = logging.FileHandler(logging_file)
+        logger.addHandler(fh)
+        logger.setLevel(logging.DEBUG)
+        logger.info('\n\n')
+        logger.info(
+            f'=======CNN Model: run at {datetime.now().isoformat()}=======')
+        logger.info(f'Params here as: {params}')
+        logger.info('\n')
 
     def train(self):
+        start = time()
         fullyOutputNumber = 1000
         n_epochs = 200
         # nkerns: number of kernels in each layer
@@ -80,7 +94,7 @@ class cnn_train():
         # Build CNN Model:
         # input+layer0(LeNetConvPoolLayer)+layer1(LeNetConvPoolLayer)+layer2(HiddenLayer)+layer3(LogisticRegression)
         ######################
-        print('...building')
+        logger.info('Model is now building...')
 
         # Reshape matrix of rasterized images of shape (batch_size, 50*50)
         # to a 4D tensor, compatible with our LeNetConvPoolLayer
@@ -202,7 +216,7 @@ class cnn_train():
         ###############
         # Train CNN to find the best parameter
         ###############
-        print('...training')
+        logger.info('Model is now training...')
         patience_increase = 2
         improvement_threshold = 0.99
         validation_frequency = min(n_train_batches, self.patience / 2)
@@ -210,7 +224,7 @@ class cnn_train():
         best_validation_loss = numpy.inf
         best_iter = 0
         test_score = 0.
-        start_time = time()
+        
 
         epoch = 0
         done_looping = False
@@ -220,7 +234,7 @@ class cnn_train():
             for minibatch_index in range(math.floor(n_train_batches)):
                 iter = (epoch - 1) * n_train_batches + minibatch_index
                 if iter % 100 == 0:
-                    print('training @ iter = ', iter)
+                    logger.info('training @ iter = ', iter)
                 cost_ij = train_model(minibatch_index)
 
                 if (iter + 1) % validation_frequency == 0:
@@ -228,7 +242,7 @@ class cnn_train():
                     validation_losses = [validate_model(i) for i
                                          in range(math.floor(n_valid_batches))]
                     this_validation_loss = numpy.mean(validation_losses)
-                    print('epoch %i, minibatch %i/%i, validation error %f %%' %
+                    logger.info('epoch %i, minibatch %i/%i, validation error %f %%' %
                           (epoch, minibatch_index + 1, n_train_batches,
                            this_validation_loss * 100.))
 
@@ -250,7 +264,7 @@ class cnn_train():
                             for i in range(math.floor(n_test_batches))
                         ]
                         test_score = numpy.mean(test_losses)
-                        print(('     epoch %i, minibatch %i/%i, test error of '
+                        logger.info(('     epoch %i, minibatch %i/%i, test error of '
                                'best model %f %%') %
                               (epoch, minibatch_index + 1, n_train_batches,
                                test_score * 100.))
@@ -273,7 +287,8 @@ class cnn_train():
                     done_looping = True
                 break
 
-        print('Optimization complete.')
-        print('Best validation score of %f %% obtained at iteration %i, '
+        logger.info('Optimization complete.')
+        logger.info('Best validation score of %f %% obtained at iteration %i, '
               'with test performance %f %%' %
               (best_validation_loss * 100., best_iter + 1, test_score * 100.))
+        logger.info('Finish running in {:.2f} seconds.'.format(time()-start))

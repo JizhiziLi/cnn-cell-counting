@@ -51,6 +51,24 @@ def generate_dataset():
         return 'We got Error'
 
 
+#####
+# route /plot_data is used to plot split images based on pkl data
+# 
+# eg. curl -H "Content-Type: application/json" -X POST -d '{"plot_name":"train_plot"}' "127.0.0.1:5000/plot_data"
+#####
+@app.route('/plot_data', methods=['POST'])
+def plot_data():
+    try:
+        body = request.get_json()
+        plot_name = body['plot_name']
+        module._plot_data_and_label(plot_name)
+        return 'Plot Data'
+    except Exception as e:
+        print(str(e))
+        return 'We got Error'
+
+
+
 
 #####
 # route /logistic_model is used to run logistic regression model on data
@@ -70,7 +88,7 @@ def logistic_model():
         module._logistic_model(body)
         return 'Logistic model has been run.'
     except Exception as e:
-        print(f'--------we have error here-------{str(e)}')
+        print(f'Error here: {str(e)}')
         return 'We got Error'
 
 
@@ -94,7 +112,7 @@ def linear_model():
         module._linear_model(body)
         return 'Linear model has been run.'
     except Exception as e:
-        print(f'--------we have error here-------{str(e)}')
+        print(f'Error here: {str(e)}')
         return 'We got Error'
 
 
@@ -121,5 +139,5 @@ def cnn_model_train():
         module._cnn_model_train(body)
         return 'CNN model has been run.'
     except Exception as e:
-        print(f'--------we have error here-------{str(e)}')
+        print(f'Error here: {str(e)}')
         return 'We got Error'

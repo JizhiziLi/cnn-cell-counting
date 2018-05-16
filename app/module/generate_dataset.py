@@ -48,8 +48,7 @@ class generate_dataset:
         label_classifier = []
         label_count = []
         label_true_count_list = []
-        label_true_bound_list = []
-        all_bound_list = []
+        crop_list = []
 
         for num in range(self.image_start, self.image_end):
             pre = pre_process(num)
@@ -72,26 +71,28 @@ class generate_dataset:
                     data.append(rgb)
                     label_classifier.append(1)
                     label_count.append(count)
-                    label_true_count_list.append(crop_bound)
-                    label_true_bound_list.append(crop_bound)
-                    all_bound_list.append(crop_bound)
+
+                    label_true_count_list.append(count)
+                    crop_list.append(crop)
+
                 elif(count==0 and label_false_counter < half_number_crop_per_image):
                     label_false_counter+=1
                     label=0
                     data.append(rgb)
                     label_classifier.append(0)
-                    label_count.append(0)
-                    all_bound_list.append(crop_bound)
+
                 elif(label_true_counter == half_number_crop_per_image and label_false_counter == half_number_crop_per_image):
                     break
 
         util_instance = util()
         util_instance.save_paramsList(self.save_name,[data, label_count])
         util_instance.save_paramsList(self.save_name+'_classifier',[data, label_classifier])
+        util_instance.save_paramsList(self.save_name+'_plot',[crop_list, label_true_count_list])
+        util_instance.plot_data_and_label(self.save_name+'_plot')
         print(f'Generate balanced data set and save to params folder as: {self.save_name}.')
         print(f'{len(label_true_count_list)} in {(self.image_end-self.image_start+1)*self.crops_number_per_image} have labels.')
 
-        return data, label_classifier, label_count, label_true_count_list, label_true_bound_list, all_bound_list
+        return data, label_classifier, label_count
 
 
 

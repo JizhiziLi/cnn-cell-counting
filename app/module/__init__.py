@@ -4,6 +4,7 @@ from .generate_dataset import *
 from .logistic_model import *
 from .linear_model import *
 from .cnn_train import *
+from .util import *
 
 
 def _print_coordinate(image_number):
@@ -21,11 +22,14 @@ def _logistic_model(body):
 
 
 def _linear_model(body):
-    print(body)
     lin = linear_model_class(**body)
 
 
 def _cnn_model_train(body):
-    print(body)
     cnn = cnn_train(**body)
     cnn.train()
+
+
+def _plot_data_and_label(plot_name):
+    util_instance = util()
+    util_instance.plot_data_and_label(plot_name)

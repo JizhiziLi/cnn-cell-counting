@@ -94,3 +94,22 @@ class util:
         for i in range(0,4):
             pickle.dump(paramsList[i], f, -1)   
         f.close()  
+
+    def plot_data_and_label(self, data_set):
+        data_file = open(os.path.join(PARAMS_PATH, f'{data_set}.pkl'), 'rb')
+        paramsList = pickle.load(data_file)
+        crop_list = paramsList[0]
+        count_list = paramsList[1]
+        f = pylab.figure()
+        pylab.rcParams['figure.figsize'] = (30,30)
+        pylab.axis('off')
+        for i in range(20):
+            f.add_subplot(4,5,i+1)
+            j = numpy.random.randint(0,len(crop_list))
+            pylab.imshow(crop_list[j])
+            pylab.title("Label: "+str(count_list[j]))
+            plt.axis('off')
+        plt.axis('off')
+        fig = pylab.gcf()
+        fig.savefig(SAVE_PATH+'plot.png',bbox_inches='tight')
+        
