@@ -13,12 +13,16 @@ Flask-Injector==0.10.1
 idna==2.6
 inflection==0.3.1
 injector==0.13.4
+intel-openmp==2018.0.0
 itsdangerous==0.24
 Jinja2==2.10
 jsonschema==2.6.0
 kiwisolver==1.0.1
 MarkupSafe==1.0
 matplotlib==2.2.2
+mkl==2018.0.0
+mkl-fft==1.0.0
+mkl-random==1.0.1
 more-itertools==4.1.0
 numpy==1.14.3
 Pillow==5.1.0
@@ -36,6 +40,7 @@ scipy==1.1.0
 six==1.11.0
 sklearn==0.0
 swagger-spec-validator==2.1.0
+Theano==1.0.1
 tornado==5.0.2
 typing==3.6.4
 urllib3==1.22

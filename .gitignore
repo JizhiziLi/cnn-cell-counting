@@ -16,3 +16,6 @@
 
 # log files #
 *.log
+
+# pkl files #
+*.pkl

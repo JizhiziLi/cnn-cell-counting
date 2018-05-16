@@ -42,12 +42,15 @@
 
     ```json
     {
-    "cell_size": 5,
-    "crop_length": 50,
-    "crop_width": 50,
-     "crops_number_per_image": 60,
-    "images_range": [1, 3],
-    "save_name": "train"
+        "cell_size": 5,
+        "crop_length": 50,
+        "crop_width": 50,
+        "crops_number_per_image": 60,
+        "images_range": [
+            1,
+            3
+        ],
+        "save_name": "train"
     }
     ```
 
@@ -57,8 +60,14 @@
 
     ```json
     {
-    "train":{"choice":1,"data_set":"train"},
-    "test":{"choice":1,"data_set":"train"}
+        "test": {
+            "choice": 1,
+            "data_set": "test"
+        },
+        "train": {
+            "choice": 1,
+            "data_set": "train"
+        }
     }
     ```
 
@@ -68,9 +77,32 @@
 
     ```json
     {
-    "train":{"choice":1,"data_set":"train"},
-    "test":{"choice":1,"data_set":"train"}
+        "test": {
+            "choice": 1,
+            "data_set": "test"
+        },
+        "train": {
+            "choice": 2,
+            "data_set": "train"
+        }
     }
     ```
 
     Pass some parameters to train logistic model on training set and test on testing set. Relevant logs and figs will be generated.
+
+5.  POST `/cnn_model/train`:
+
+    ```json
+    {
+        "cell_number": 16,
+        "choice": "linear_count",
+         "height": 50,
+        "learning_rate": 0.0001,
+        "number": 1000,
+        "patience": 5000,
+        "train_set_file": "train",
+        "width": 50
+    }
+    ```
+
+    Pass some parameters to train cnn model on training set. Other parameters include `patience` and `learning_rate` can also be modified to increase training efficiency and model performance.

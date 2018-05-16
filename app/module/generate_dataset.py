@@ -87,6 +87,7 @@ class generate_dataset:
 
         util_instance = util()
         util_instance.save_paramsList(self.save_name,[data, label_count])
+        util_instance.save_paramsList(self.save_name+'_classifier',[data, label_classifier])
         print(f'Generate balanced data set and save to params folder as: {self.save_name}.')
         print(f'{len(label_true_count_list)} in {(self.image_end-self.image_start+1)*self.crops_number_per_image} have labels.')
 

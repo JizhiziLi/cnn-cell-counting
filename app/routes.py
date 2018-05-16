@@ -96,3 +96,30 @@ def linear_model():
     except Exception as e:
         print(f'--------we have error here-------{str(e)}')
         return 'We got Error'
+
+
+
+#####
+# route /cnn_model_train is used to train cnn model on data
+# eg. curl -H "Content-Type: application/json" -X POST -d 
+# "{
+#  "width": 50,
+#  "height": 50,
+#  "patience": 5000,
+#  "choice": "linear_count",
+#  "number": 1000,
+#  "cell_number": 16,
+#  "learning_rate": 0.0001,
+#  "train_set_file": "train"
+# }"
+# to "127.0.0.1:5000/cnn_model/train"
+#####
+@app.route('/cnn_model/train', methods=['POST'])
+def cnn_model_train():
+    try:
+        body = request.get_json()
+        module._cnn_model_train(body)
+        return 'CNN model has been run.'
+    except Exception as e:
+        print(f'--------we have error here-------{str(e)}')
+        return 'We got Error'
