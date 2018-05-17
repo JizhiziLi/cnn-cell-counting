@@ -14,7 +14,6 @@ from sklearn.metrics import mean_squared_error
 from sklearn.metrics import explained_variance_score
 from pydoc import help
 from scipy.stats.stats import pearsonr
-from math import sqrt
 import math
 from time import time
 import logging
@@ -61,6 +60,7 @@ class cnn_train():
             self.train_set_file+'_classifier')[1]
         train_set_count_label = util_instance.load_paramsList(self.train_set_file)[
             1]
+        logger.info(f'Size of input is: {str(len(train_set_data))} / {str(len(train_set_label))} / {str(len(train_set_count_label))}')
         # Initial parameter
         rng = numpy.random.RandomState(23455)
         # Load data
@@ -100,7 +100,7 @@ class cnn_train():
         # to a 4D tensor, compatible with our LeNetConvPoolLayer
         # (50,50) is the size of  images.
         layer0_input = x.reshape((batch_size, 1, self.width, self.height))
-
+        logger.info(f'shape of layer0_input is {shape(layer0_input)}')
         # The first convolutional_maxpooling layer
         # Size after convolutional: (50-5+1 , 50-5+1) = (46, 46)
         # Size after maxpooling: (46/2, 46/2) = (23, 23), ignore the boundary
@@ -224,7 +224,6 @@ class cnn_train():
         best_validation_loss = numpy.inf
         best_iter = 0
         test_score = 0.
-        
 
         epoch = 0
         done_looping = False
@@ -243,8 +242,8 @@ class cnn_train():
                                          in range(math.floor(n_valid_batches))]
                     this_validation_loss = numpy.mean(validation_losses)
                     logger.info('epoch %i, minibatch %i/%i, validation error %f %%' %
-                          (epoch, minibatch_index + 1, n_train_batches,
-                           this_validation_loss * 100.))
+                                (epoch, minibatch_index + 1, n_train_batches,
+                                 this_validation_loss * 100.))
 
                     # if we got the best validation score until now
                     if this_validation_loss < best_validation_loss:
@@ -265,9 +264,9 @@ class cnn_train():
                         ]
                         test_score = numpy.mean(test_losses)
                         logger.info(('     epoch %i, minibatch %i/%i, test error of '
-                               'best model %f %%') %
-                              (epoch, minibatch_index + 1, n_train_batches,
-                               test_score * 100.))
+                                     'best model %f %%') %
+                                    (epoch, minibatch_index + 1, n_train_batches,
+                                     test_score * 100.))
 
                 paramsList = [layer0.params, layer1.params,
                               layer2.params, layer3.params]
@@ -289,6 +288,6 @@ class cnn_train():
 
         logger.info('Optimization complete.')
         logger.info('Best validation score of %f %% obtained at iteration %i, '
-              'with test performance %f %%' %
-              (best_validation_loss * 100., best_iter + 1, test_score * 100.))
+                    'with test performance %f %%' %
+                    (best_validation_loss * 100., best_iter + 1, test_score * 100.))
         logger.info('Finish running in {:.2f} seconds.'.format(time()-start))

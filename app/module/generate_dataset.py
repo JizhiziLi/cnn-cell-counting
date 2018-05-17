@@ -69,9 +69,9 @@ class generate_dataset:
                     label_true_counter+=1
                     label = 1
                     data.append(rgb)
-                    label_classifier.append(1)
                     label_count.append(count)
-
+                    label_classifier.append(1)
+                    
                     label_true_count_list.append(count)
                     crop_list.append(crop)
 
@@ -79,6 +79,7 @@ class generate_dataset:
                     label_false_counter+=1
                     label=0
                     data.append(rgb)
+                    label_count.append(0)
                     label_classifier.append(0)
 
                 elif(label_true_counter == half_number_crop_per_image and label_false_counter == half_number_crop_per_image):

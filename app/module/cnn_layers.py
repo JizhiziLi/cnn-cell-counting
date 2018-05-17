@@ -24,6 +24,7 @@ class LogisticRegression(object):
     Use softmax method
     '''
     def __init__(self, input, n_in, n_out):
+        print('-----LogisticRegression------')
         self.W = theano.shared(
             value=numpy.zeros(
                 (n_in, n_out),
@@ -65,6 +66,7 @@ class LinearRegression(object):
     It is the last layer of CNN
     '''
     def __init__(self, input, n_in, n_out):
+        print('-----LinearRegression------')
         self.W = theano.shared(
             value=numpy.zeros(
                 (n_in, n_out),
@@ -107,6 +109,7 @@ class HiddenLayer(object):
     '''
     def __init__(self, rng, input, n_in, n_out, W=None, b=None,
                  activation=T.tanh):
+        print('-----HiddenLayer------')
         self.input = input
         if W is None:
             W_values = numpy.asarray(
@@ -141,7 +144,9 @@ class LeNetConvPoolLayer(object):
     '''
     This is the convolutional layer + max-pooling layer
     '''
+    
     def __init__(self, rng, input, filter_shape, image_shape, poolsize=(2, 2)):
+        print('-----LeNetConvPoolLayer------')
         assert image_shape[1] == filter_shape[1]
         self.input = input
 

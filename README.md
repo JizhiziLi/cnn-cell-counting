@@ -116,3 +116,17 @@
     ```
 
     Pass some parameters to train cnn model on training set. Other parameters include `patience` and `learning_rate` can also be modified to increase training efficiency and model performance.
+
+## Some examples
+
+1. Well image
+
+![Well](https://github.com/JizhiziLi/cnn-cell-counting/blob/master/app/static/save/coordinate.png)
+
+2. Well image with coordinate print
+
+![coordinate](https://github.com/JizhiziLi/cnn-cell-counting/blob/master/app/static/save/coordinate.png)
+
+3. Train/test data and label plotted
+
+![splitcrops](https://github.com/JizhiziLi/cnn-cell-counting/blob/master/app/static/save/plot.png)

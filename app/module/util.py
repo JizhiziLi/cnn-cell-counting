@@ -11,6 +11,7 @@ import numpy
 from sklearn.cross_validation import train_test_split
 import theano
 import theano.tensor as T
+from math import sqrt
 
 
 logger = logging.getLogger(__name__)
