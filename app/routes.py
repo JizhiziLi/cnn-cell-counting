@@ -118,7 +118,7 @@ def linear_model():
 
 
 #####
-# route /cnn_model_train is used to train cnn model on data
+# route /cnn_model/train is used to train cnn model on data
 # eg. curl -H "Content-Type: application/json" -X POST -d 
 # "{
 #  "width": 50,
@@ -138,6 +138,28 @@ def cnn_model_train():
         body = request.get_json()
         module._cnn_model_train(body)
         return 'CNN model has been run.'
+    except Exception as e:
+        print(f'Error here: {str(e)}')
+        return 'We got Error'
+
+
+
+#####
+# route /cnn_model/test is used to train cnn model on data
+# eg. curl -H "Content-Type: application/json" -X POST -d 
+# "{
+#  "test_set_file": "test",
+#  "params_path": "cnn_linear_count_params",
+#  "choice": "linear_count", #logistic_zeroOne/logistic_count/linear_count
+# }"
+# to "127.0.0.1:5000/cnn_model/test"
+#####
+@app.route('/cnn_model/test', methods=['POST'])
+def cnn_model_test():
+    try:
+        body = request.get_json()
+        module._cnn_model_test(body)
+        return 'CNN model test has been run.'
     except Exception as e:
         print(f'Error here: {str(e)}')
         return 'We got Error'

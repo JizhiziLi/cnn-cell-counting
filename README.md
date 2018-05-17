@@ -117,6 +117,19 @@
 
     Pass some parameters to train cnn model on training set. Other parameters include `patience` and `learning_rate` can also be modified to increase training efficiency and model performance.
 
+6.  POST `/cnn_model/test`:
+
+    ```json
+    {
+        "test_set_file": "test",
+        "params_path": "linear_count_params",
+        "choice": "linear_count"
+    }
+    ```
+
+    Pass some parameters to test cnn model on testing. `params_path` stands for path of params, `choice` stands for which final layer and output we are using. Available choice are `linear_count/logistic_count/logistic_zeroOne`
+
+
 ## Some examples
 
 1. Well image

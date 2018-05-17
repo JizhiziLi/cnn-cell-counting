@@ -1,4 +1,4 @@
-from .cnn_layers import *
+from .cnn_train_layers import *
 from .util import *
 from ..config import *
 import os
@@ -65,12 +65,12 @@ class cnn_train():
         rng = numpy.random.RandomState(23455)
         # Load data
         if(self.choice == 'logistic_zeroOne'):
-            datasets = util_instance.load_data(train_set_data, train_set_label)
+            datasets = util_instance.load_data_for_cnn_train(train_set_data, train_set_label)
         elif(self.choice == 'logistic_count'):
-            datasets = util_instance.load_data(
+            datasets = util_instance.load_data_for_cnn_train(
                 train_set_data, train_set_count_label)
         elif(self.choice == 'linear_count'):
-            datasets = util_instance.load_data(
+            datasets = util_instance.load_data_for_cnn_train(
                 train_set_data, train_set_count_label)
 
         train_set_x, train_set_y = datasets[0]
@@ -100,7 +100,8 @@ class cnn_train():
         # to a 4D tensor, compatible with our LeNetConvPoolLayer
         # (50,50) is the size of  images.
         layer0_input = x.reshape((batch_size, 1, self.width, self.height))
-        logger.info(f'shape of layer0_input is {shape(layer0_input)}')
+        logger.info(f'type of layer0_input is {type(layer0_input)}')
+        logger.info(layer0_input)
         # The first convolutional_maxpooling layer
         # Size after convolutional: (50-5+1 , 50-5+1) = (46, 46)
         # Size after maxpooling: (46/2, 46/2) = (23, 23), ignore the boundary
@@ -112,7 +113,7 @@ class cnn_train():
             filter_shape=(nkerns[0], 1, layer1_conv, layer1_conv),
             poolsize=(2, 2)
         )
-
+        logger.info(f'-----layer 0 output is {layer0.output}')
         # Second convolutional + maxpooling layer, use last layer's output as input, (batch_size, nkerns[0], 23, 23)
         #
         # Size after convolutional: (23-5+1 , 23-5+1) = (19, 19)
@@ -131,7 +132,7 @@ class cnn_train():
             filter_shape=(nkerns[1], nkerns[0], layer2_conv, layer2_conv),
             poolsize=(2, 2)
         )
-
+        logger.info(f'-----layer 1 output is {layer1.output}')
         hiddenlayerSize = math.floor((width1-layer2_conv+1)/2)
 
         # HiddenLayer full-connected layer, the size of input is (batch_size,num_pixels), so each sample will get a one-dimentional vector after layer0 and layer1
@@ -148,7 +149,7 @@ class cnn_train():
             n_out=fullyOutputNumber,  # output number of full-connected layer, defined, can change
             activation=T.tanh
         )
-
+        logger.info(f'-----layer 2 output is {layer2.output}')
         # Classifier Layer
         ###############
         # Define some basic factors in optimization, cost function, train, validation, test model, updating rules(Gradient Descent)
@@ -162,7 +163,7 @@ class cnn_train():
             cost = layer3.negative_log_likelihood(y)
         elif(self.choice == 'logistic_count'):
             layer3 = LogisticRegression(
-                input=layer2.output, n_in=fullyOutputNumber, n_out=cellNumber+1)
+                input=layer2.output, n_in=fullyOutputNumber, n_out=self.cell_number+1)
             cost = layer3.negative_log_likelihood(y)
         elif(self.choice == 'linear_count'):
             layer3 = LinearRegression(
@@ -267,20 +268,22 @@ class cnn_train():
                                      'best model %f %%') %
                                     (epoch, minibatch_index + 1, n_train_batches,
                                      test_score * 100.))
-
+                # logger.info(f'----layer0 params is {layer0.params}')
+                # logger.info(f'----layer1 params is {layer1.params}')
                 paramsList = [layer0.params, layer1.params,
                               layer2.params, layer3.params]
                 if(self.choice == 'logistic_zeroOne'):
-                    util_instance.save_params('logistic_zeroOne_params',
+                    util_instance.save_params_for_cnn('cnn_logistic_zeroOne_params',
                                               paramsList)  # save parameter
                 elif(self.choice == 'logistic_count'):
-                    util_instance.save_params('logistic_count_params',
+                    util_instance.save_params_for_cnn('cnn_logistic_count_params',
                                               paramsList)  # save parameter
                 elif(self.choice == 'linear_count'):
                     # [5]
                     # save parameter
-                    util_instance.save_params(
-                        'linear_count_params', paramsList)
+                    logger.info(f'-----we have paramsList----{paramsList}')
+                    util_instance.save_params_for_cnn(
+                        'cnn_linear_count_params', paramsList)
 
                 if self.patience <= iter:
                     done_looping = True

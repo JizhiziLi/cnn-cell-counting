@@ -64,7 +64,7 @@ class util:
         logger.info('PEARSON:')
         logger.info(pearsonr(true, predict))
 
-    def load_data(self, Data, Label):
+    def load_data_for_cnn_train(self, Data, Label):
         train_data_list,test_data_valid, train_label_list, test_label_valid = train_test_split(Data,Label, test_size=0.2, random_state=0)
         test_data_list,valid_data_list,test_label_list,valid_label_list= train_test_split(test_data_valid,test_label_valid,test_size=0.5,random_state=0)
         train_data = numpy.array(train_data_list)
@@ -89,12 +89,26 @@ class util:
         rval = [(train_set_x, train_set_y),(valid_set_x, valid_set_y),(test_set_x, test_set_y)]
         return rval
 
+    def load_data_for_cnn_test(self, Data, Label):
+        test_data = numpy.array(Data)
+        test_label = numpy.array(Label)
+        return test_data,test_label
+
     #Save the parameters from training
-    def save_params(self, save_name, paramsList):  
+    def save_params_for_cnn(self, save_name, paramsList):  
         f = open(os.path.join(PARAMS_PATH, f'{save_name}.pkl'), 'wb')
         for i in range(0,4):
             pickle.dump(paramsList[i], f, -1)   
         f.close()  
+
+    def load_params_for_cnn(self, save_name):
+        f = open(os.path.join(PARAMS_PATH, f'{save_name}.pkl'), 'rb')
+        layer0_params=pickle.load(f)
+        layer1_params=pickle.load(f)
+        layer2_params=pickle.load(f)
+        layer3_params=pickle.load(f)
+        f.close()
+        return layer0_params,layer1_params,layer2_params,layer3_params
 
     def plot_data_and_label(self, data_set):
         data_file = open(os.path.join(PARAMS_PATH, f'{data_set}.pkl'), 'rb')
