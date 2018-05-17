@@ -121,7 +121,7 @@
 
 1. Well image
 
-![Well](https://github.com/JizhiziLi/cnn-cell-counting/blob/master/app/static/save/coordinate.png)
+![Well](https://github.com/JizhiziLi/cnn-cell-counting/blob/master/app/static/save/well.png)
 
 2. Well image with coordinate print
 
@@ -130,3 +130,10 @@
 3. Train/test data and label plotted
 
 ![splitcrops](https://github.com/JizhiziLi/cnn-cell-counting/blob/master/app/static/save/plot.png)
+
+
+## Dissertation and Slides
+
+[Dissertation](https://github.com/JizhiziLi/cnn-cell-counting/blob/master/document/dissertation_JizhiziLi.pdf)
+
+[Slides](https://github.com/JizhiziLi/cnn-cell-counting/blob/master/document/slides_JizhiziLi.pdf)
