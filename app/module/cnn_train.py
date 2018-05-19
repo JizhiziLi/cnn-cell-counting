@@ -21,6 +21,7 @@ from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
+
 class cnn_train():
     def __init__(self, **kwargs):
         params = dict(kwargs)
@@ -36,6 +37,12 @@ class cnn_train():
         logging_file = os.path.join(self.path, 'cnn_model_train.log')
         fh = logging.FileHandler(logging_file)
         logger.addHandler(fh)
+
+        # ch = logging.StreamHandler()
+        # formatter = logging.Formatter('%(threadName)s: %(message)s')
+        # ch.setFormatter(formatter)
+        # ch.setLevel(logging.DEBUG)
+        # logger.addHandler(ch)
         logger.setLevel(logging.DEBUG)
         logger.info('\n\n')
         logger.info(
@@ -53,6 +60,7 @@ class cnn_train():
         layer1_conv = 5
         layer2_conv = 5
         batch_size = 40
+        
 
         util_instance = util()
         train_set_data = util_instance.load_paramsList(self.train_set_file)[0]
@@ -60,12 +68,15 @@ class cnn_train():
             self.train_set_file+'_classifier')[1]
         train_set_count_label = util_instance.load_paramsList(self.train_set_file)[
             1]
-        logger.info(f'Size of input is: {str(len(train_set_data))} / {str(len(train_set_label))} / {str(len(train_set_count_label))}')
+        logger.info(
+            f'Size of train/test/validate is : {len(train_set_data)}/{len(train_set_label)*0.1} /{len(train_set_label)*0.1}')    
         # Initial parameter
         rng = numpy.random.RandomState(23455)
-        # Load data
+
+        # Load data, 20% of training set as testing set, and 10% among them is valid set
         if(self.choice == 'logistic_zeroOne'):
-            datasets = util_instance.load_data_for_cnn_train(train_set_data, train_set_label)
+            datasets = util_instance.load_data_for_cnn_train(
+                train_set_data, train_set_label)
         elif(self.choice == 'logistic_count'):
             datasets = util_instance.load_data_for_cnn_train(
                 train_set_data, train_set_count_label)
@@ -76,12 +87,16 @@ class cnn_train():
         train_set_x, train_set_y = datasets[0]
         valid_set_x, valid_set_y = datasets[1]
         test_set_x, test_set_y = datasets[2]
-
+        
+        logger.info(f'train_set_x is {train_set_x.shape}')
+        logger.info(f'train_set_x size is {train_set_x.get_value(borrow=True).shape}')
         # Calculate batch_size for each data set
         n_train_batches = train_set_x.get_value(borrow=True).shape[0]
+        logger.info(f'n_train_batches is {n_train_batches}')
         n_valid_batches = valid_set_x.get_value(borrow=True).shape[0]
         n_test_batches = test_set_x.get_value(borrow=True).shape[0]
         n_train_batches /= batch_size
+        logger.info(f'n_train_batches is {n_train_batches}')
         n_valid_batches /= batch_size
         n_test_batches /= batch_size
 
@@ -100,8 +115,7 @@ class cnn_train():
         # to a 4D tensor, compatible with our LeNetConvPoolLayer
         # (50,50) is the size of  images.
         layer0_input = x.reshape((batch_size, 1, self.width, self.height))
-        logger.info(f'type of layer0_input is {type(layer0_input)}')
-        logger.info(layer0_input)
+        
         # The first convolutional_maxpooling layer
         # Size after convolutional: (50-5+1 , 50-5+1) = (46, 46)
         # Size after maxpooling: (46/2, 46/2) = (23, 23), ignore the boundary
@@ -113,7 +127,6 @@ class cnn_train():
             filter_shape=(nkerns[0], 1, layer1_conv, layer1_conv),
             poolsize=(2, 2)
         )
-        logger.info(f'-----layer 0 output is {layer0.output}')
         # Second convolutional + maxpooling layer, use last layer's output as input, (batch_size, nkerns[0], 23, 23)
         #
         # Size after convolutional: (23-5+1 , 23-5+1) = (19, 19)
@@ -132,7 +145,6 @@ class cnn_train():
             filter_shape=(nkerns[1], nkerns[0], layer2_conv, layer2_conv),
             poolsize=(2, 2)
         )
-        logger.info(f'-----layer 1 output is {layer1.output}')
         hiddenlayerSize = math.floor((width1-layer2_conv+1)/2)
 
         # HiddenLayer full-connected layer, the size of input is (batch_size,num_pixels), so each sample will get a one-dimentional vector after layer0 and layer1
@@ -140,7 +152,7 @@ class cnn_train():
 
         # [2]
         layer2_input = layer1.output.flatten(2)
-
+        
         layer2 = HiddenLayer(
             rng,
             input=layer2_input,
@@ -149,7 +161,6 @@ class cnn_train():
             n_out=fullyOutputNumber,  # output number of full-connected layer, defined, can change
             activation=T.tanh
         )
-        logger.info(f'-----layer 2 output is {layer2.output}')
         # Classifier Layer
         ###############
         # Define some basic factors in optimization, cost function, train, validation, test model, updating rules(Gradient Descent)
@@ -217,10 +228,12 @@ class cnn_train():
         ###############
         # Train CNN to find the best parameter
         ###############
-        logger.info('Model is now training...')
+        
         patience_increase = 2
         improvement_threshold = 0.99
         validation_frequency = min(n_train_batches, self.patience / 2)
+        
+        
 
         best_validation_loss = numpy.inf
         best_iter = 0
@@ -228,20 +241,30 @@ class cnn_train():
 
         epoch = 0
         done_looping = False
+        
+        logger.info(f'Logging out some params before training...')
+        logger.info(f'Max looping will be {n_epochs} * {math.floor(n_train_batches)}')
+        logger.info(f'validation frequency is {validation_frequency}')
+        logger.info(f'self patience is {self.patience}')
+        logger.info('Model is now training...')
+
 
         while (epoch < n_epochs) and (not done_looping):
             epoch = epoch + 1
-            for minibatch_index in range(math.floor(n_train_batches)):
+            for minibatch_index in range(0, math.floor(n_train_batches)):
+
                 iter = (epoch - 1) * n_train_batches + minibatch_index
                 if iter % 100 == 0:
                     logger.info('training @ iter = ', iter)
                 cost_ij = train_model(minibatch_index)
-
+                
                 if (iter + 1) % validation_frequency == 0:
                     # compute zero-one loss on validation set
                     validation_losses = [validate_model(i) for i
                                          in range(math.floor(n_valid_batches))]
                     this_validation_loss = numpy.mean(validation_losses)
+                    logger.info(f'******** log out some validation loss *******')
+                    logger.info(f'validation loss is {this_validation_loss}')
                     logger.info('epoch %i, minibatch %i/%i, validation error %f %%' %
                                 (epoch, minibatch_index + 1, n_train_batches,
                                  this_validation_loss * 100.))
@@ -253,7 +276,7 @@ class cnn_train():
                         if this_validation_loss < best_validation_loss *  \
                                 improvement_threshold:
                             self.patience = max(
-                                self.patience, iter * self.patience_increase)
+                                self.patience, iter * patience_increase)
 
                         # save best validation score and iteration number
                         best_validation_loss = this_validation_loss
@@ -268,26 +291,24 @@ class cnn_train():
                                      'best model %f %%') %
                                     (epoch, minibatch_index + 1, n_train_batches,
                                      test_score * 100.))
-                # logger.info(f'----layer0 params is {layer0.params}')
-                # logger.info(f'----layer1 params is {layer1.params}')
+                
                 paramsList = [layer0.params, layer1.params,
                               layer2.params, layer3.params]
                 if(self.choice == 'logistic_zeroOne'):
                     util_instance.save_params_for_cnn('cnn_logistic_zeroOne_params',
-                                              paramsList)  # save parameter
+                                                      paramsList)  # save parameter
                 elif(self.choice == 'logistic_count'):
                     util_instance.save_params_for_cnn('cnn_logistic_count_params',
-                                              paramsList)  # save parameter
+                                                      paramsList)  # save parameter
                 elif(self.choice == 'linear_count'):
                     # [5]
                     # save parameter
-                    logger.info(f'-----we have paramsList----{paramsList}')
                     util_instance.save_params_for_cnn(
                         'cnn_linear_count_params', paramsList)
 
                 if self.patience <= iter:
                     done_looping = True
-                break
+                    break
 
         logger.info('Optimization complete.')
         logger.info('Best validation score of %f %% obtained at iteration %i, '

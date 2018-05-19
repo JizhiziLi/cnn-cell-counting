@@ -3,7 +3,7 @@ import sys
 import numpy
 import theano
 import theano.tensor as T
-from theano.tensor.nnet import conv
+from theano.tensor.nnet import conv2d
 from theano.tensor.signal import pool
 from sklearn.metrics import mean_squared_error
 from sklearn import datasets, linear_model
@@ -162,16 +162,22 @@ class LeNetConvPoolLayer(object):
         b_values = numpy.zeros((filter_shape[0],), dtype=theano.config.floatX)
         self.b = theano.shared(value=b_values, borrow=True)
         # Convolutional layer
-        conv_out = conv.conv2d(
+        # conv_out = conv.conv2d(
+        #     input=input,
+        #     filters=self.W,
+        #     filter_shape=filter_shape,
+        #     image_shape=image_shape
+        # )
+        conv_out = conv2d(
             input=input,
             filters=self.W,
             filter_shape=filter_shape,
-            image_shape=image_shape
+            input_shape=image_shape
         )
         # Max-pooling
         pooled_out = pool.pool_2d(
             input=conv_out,
-            ds=poolsize,
+            ws=poolsize,
             ignore_border=True
         )
         # pooled_out = downsample.max_pool_2d(

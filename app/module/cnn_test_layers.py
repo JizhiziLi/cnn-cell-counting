@@ -7,7 +7,7 @@ from PIL import Image
 
 import theano
 import theano.tensor as T
-from theano.tensor.nnet import conv
+from theano.tensor.nnet import conv2d
 from theano.tensor.signal import pool
 import math
 
@@ -85,16 +85,22 @@ class LeNetConvPoolLayer(object):
         self.W = params_W
         self.b = params_b
         # convolutional
-        conv_out = conv.conv2d(
+        # conv_out = conv.conv2d(
+        #     input=input,
+        #     filters=self.W,
+        #     filter_shape=filter_shape,
+        #     image_shape=image_shape
+        # )
+        conv_out = conv2d(
             input=input,
             filters=self.W,
             filter_shape=filter_shape,
-            image_shape=image_shape
+            input_shape=image_shape
         )
         # macpooling
         pooled_out = pool.pool_2d(
             input=conv_out,
-            ds=poolsize,
+            ws=poolsize,
             ignore_border=True
         )
 
