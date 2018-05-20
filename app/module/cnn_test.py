@@ -28,6 +28,8 @@ class cnn_test():
         self.choice = params['choice']
         self.print_switch = True
         self.path = CNN_MODEL_PATH
+        util_instance = util()
+        util_instance.check_if_folder_exists(self.path)
         logging_file = os.path.join(self.path, 'cnn_model_test.log')
         fh = logging.FileHandler(logging_file)
         logger.addHandler(fh)

@@ -127,4 +127,9 @@ class util:
         plt.axis('off')
         fig = pylab.gcf()
         fig.savefig(SAVE_PATH+'plot.png',bbox_inches='tight')
+
+    def check_if_folder_exists(self,path):
+        if not os.path.exists(path):
+            os.makedirs(path)
+
         

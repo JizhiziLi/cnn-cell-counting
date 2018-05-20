@@ -116,7 +116,7 @@
     }
     ```
 
-    Pass some parameters to train cnn model on training set. Other parameters include `patience` and `learning_rate` can also be modified to increase training efficiency and model performance.
+    Pass some parameters to train cnn model on training set. Other parameters include `patience` and `learning_rate` can also be modified to increase training efficiency and model performance. Logging will be displayed in folder `~/static/models/cnn_model`.
 
 6.  POST `/cnn_model/test`:
 
@@ -128,7 +128,7 @@
     }
     ```
 
-    Pass some parameters to test cnn model on testing. `params_path` stands for path of params, `choice` stands for which final layer and output we are using. Available choice are `linear_count/logistic_count/logistic_zeroOne`
+    Pass some parameters to test cnn model on testing. `params_path` stands for path of params, `choice` stands for which final layer and output we are using. Available choice are `linear_count/logistic_count/logistic_zeroOne`. Logging will be displayed in folder `~/static/models/cnn_model`.
 
 
 ## Some examples

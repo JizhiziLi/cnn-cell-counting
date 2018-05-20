@@ -34,6 +34,8 @@ class cnn_train():
         self.learning_rate = params['learning_rate']
         self.train_set_file = params['train_set_file']
         self.path = CNN_MODEL_PATH
+        util_instance = util()
+        util_instance.check_if_folder_exists(self.path)
         logging_file = os.path.join(self.path, 'cnn_model_train.log')
         fh = logging.FileHandler(logging_file)
         logger.addHandler(fh)
@@ -52,6 +54,8 @@ class cnn_train():
 
     def train(self):
         start = time()
+        util_instance = util()
+
         fullyOutputNumber = 1000
         n_epochs = 200
         # nkerns: number of kernels in each layer
@@ -62,7 +66,7 @@ class cnn_train():
         batch_size = 40
         
 
-        util_instance = util()
+        
         train_set_data = util_instance.load_paramsList(self.train_set_file)[0]
         train_set_label = util_instance.load_paramsList(
             self.train_set_file+'_classifier')[1]
