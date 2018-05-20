@@ -1,7 +1,7 @@
 # CNN-CELL-COUNTING
 
 * This is a well-structured Machine Learning microservice enables RESTful API.
-* Finished as my Master Degree Research project under **Dr.Andrey Kan** and **Dr. Vinh Nguyen** in 2016.
+* Finished as my Master Degree's Research project under **Dr.Andrey Kan** and **Dr. Vinh Nguyen**'s supervision in 2016.
 * Uses to count the number of cells in a medical image based on CNN & other algorithms. 
 * Relevant dissertation and demo slides can be viewed in `document` folder.
 * Structure used for building in this case is [flask](http://flask.pocoo.org/).
