@@ -1,6 +1,7 @@
 # CNN-CELL-COUNTING
 
 * This is a well-structured Machine Learning microservice enables RESTful API.
+* Finished as my Master Degree Research project under **Dr.Andrey Kan** and **Dr. Vinh Nguyen** in 2016.
 * Uses to count the number of cells in a medical image based on CNN & other algorithms. 
 * Relevant dissertation and demo slides can be viewed in `document` folder.
 * Structure used for building in this case is [flask](http://flask.pocoo.org/).
@@ -150,3 +151,9 @@
 [Dissertation](https://github.com/JizhiziLi/cnn-cell-counting/blob/master/document/dissertation_JizhiziLi.pdf)
 
 [Slides](https://github.com/JizhiziLi/cnn-cell-counting/blob/master/document/slides_JizhiziLi.pdf)
+
+## Note
+
+The data used in this project is from the publication below, anyone wants to use the data please cite this paper.
+
+*Kan, A., Chakravorty, R., Bailey, J., Leckie, C., Markham, J., & Dowling, M.R. (2011). Automated and semi‐automated cell tracking: addressing portability challenges. Journal of microscopy, 244(2), 194-213.*
