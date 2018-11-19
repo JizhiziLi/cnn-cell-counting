@@ -5,7 +5,7 @@
 # use `chmod +x build.sh` to set permission
 
 # Only run this scirpt once when you want to build a similar void project.
-# If you clone the repo directly, please use .sh instead.
+# If you clone the repo directly, please use setup.sh instead.
 
 echo "Hello there, I'll help you set up a basic flask structure for your machine learning model"
 echo "Please name the project you want to build:"
