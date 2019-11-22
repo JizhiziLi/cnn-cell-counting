@@ -38,7 +38,7 @@ pyparsing==2.2.0
 pytest==3.5.1
 python-dateutil==2.7.3
 pytz==2018.4
-PyYAML==3.12
+PyYAML==5.1
 requests==2.18.4
 scikit-learn==0.19.1
 scipy==1.1.0
