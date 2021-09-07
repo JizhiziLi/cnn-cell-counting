@@ -29,7 +29,7 @@ mkl-fft==1.0.0
 mkl-random==1.0.1
 more-itertools==4.1.0
 numpy==1.14.3
-Pillow==5.1.0
+Pillow==8.3.2
 pluggy==0.6.0
 py==1.5.3
 pycodestyle==2.4.0
